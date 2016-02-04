@@ -1,10 +1,12 @@
-package net.sagon.agilecoach;
+package net.sagon.agilecoach.model;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import net.sagon.agilecoach.model.Model;
 
 import org.junit.Test;
 

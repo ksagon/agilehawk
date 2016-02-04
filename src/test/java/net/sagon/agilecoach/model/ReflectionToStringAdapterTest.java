@@ -1,7 +1,8 @@
-package net.sagon.agilecoach;
+package net.sagon.agilecoach.model;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import net.sagon.agilecoach.model.ReflectionToStringAdapter;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Test;

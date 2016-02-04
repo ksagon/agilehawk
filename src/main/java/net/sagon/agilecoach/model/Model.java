@@ -1,4 +1,4 @@
-package net.sagon.agilecoach;
+package net.sagon.agilecoach.model;
 
 
 public class Model extends ReflectionToStringAdapter {

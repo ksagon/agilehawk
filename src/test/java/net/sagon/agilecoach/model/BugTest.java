@@ -1,6 +1,8 @@
-package net.sagon.agilecoach;
+package net.sagon.agilecoach.model;
 
 import static org.junit.Assert.*;
+import net.sagon.agilecoach.model.Bug;
+import net.sagon.agilecoach.model.WorkItemType;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
@@ -19,7 +21,7 @@ public class BugTest {
         assertThat("Default Bug Has Title 'Bug'", bug.getTitle(), CoreMatchers.is("Bug"));
         assertThat("Default Bug Has Id 'BUG-1'", bug.getName(), CoreMatchers.is("BUG-1"));
         assertThat("Default Bug Has Status 'Open'", bug.getStatus(), CoreMatchers.is("Open"));
-        assertThat("Default Bug Has Type 'Bug'", bug.getType(), CoreMatchers.is("Bug"));
+        assertThat("Default Bug Has Type 'Bug'", bug.getType(), CoreMatchers.is(WorkItemType.BUG));
     }
 
 }
