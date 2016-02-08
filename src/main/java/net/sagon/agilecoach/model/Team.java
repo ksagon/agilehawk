@@ -1,31 +1,58 @@
 package net.sagon.agilecoach.model;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Team {
 
-    private List<Resource> resources = new ArrayList<Resource>();
+    private Set<Resource> resources = new HashSet<Resource>();
 
-    public List<Resource> getResources() {
+    public Team() {
+    }
+    
+    public Team(List<Story> stories, List<Bug> bugs) {
+    	stories.forEach(story -> this.addStory(story));
+    	bugs.forEach(bug -> this.addBug(bug));
+	}
+
+	public Set<Resource> getResources() {
         return resources;
     }
 
     public void addResource(Resource resource) {
-        resources .add(resource);
+        resources.add(resource);
     }
 
-    public double getPeriodStoryVelocity(Date start, Date end) {
-        if( resources.size() == 0 ) {
-            return 0;
-        }
+	public void addStory(Story story) {
+		Resource r = findOrAddResource(story);
+		r.addStory(story);
+	}
 
-        double totalVelocity = 0.0;
-        for( int i = 0; i < resources.size(); i++ ) {
-            totalVelocity += resources.get(i).getWeeklyStoryVelocity(start, end);
-        }
+	public void addBug(Bug bug) {
+		Resource r = findOrAddResource(bug);
+		r.addBug(bug);
+	}
 
-        return totalVelocity / resources.size();
+	public double getPeriodStoryVelocity(ZonedDateTime start, ZonedDateTime end) {
+        return resources.stream().collect(Collectors.averagingDouble( resource -> resource.getWeeklyStoryVelocity(start, end) ));
     }
+
+	private Resource findOrAddResource(Issue issue) {
+		Resource r = issue.getResolvedBy();
+
+		Optional<Resource> optional = resources.stream().filter(resource -> resource.getName().equalsIgnoreCase(issue.getResolvedBy().getName())).findFirst();
+		if( optional.isPresent() ) {
+			r = optional.get();
+		}
+		else {
+			resources.add(r);
+		}
+
+		return r;
+	}
+
 }

@@ -2,34 +2,29 @@ package net.sagon.agilecoach.model;
 
 import java.time.ZonedDateTime;
 
-public abstract class WorkItem extends Model {
+public abstract class Issue extends Model {
     private static final long serialVersionUID = -913600440903864934L;
 
     private String title;
-    private Resource owner = new Resource();
     private String epic;
     private String status = "Open";
     private ZonedDateTime resolutionDate;
-    private Resource resolvedBy;
+    private Resource resolvedBy = new Resource("Unassigned");
     private ZonedDateTime createdDate;
-    private Resource createdBy;
+    private Resource createdBy = new Resource("Unassigned");
     private double openDays;
     private double devDays;
     private double qaDays;
 
-    public WorkItem(String name, String title) {
+    public Issue(String name, String title) {
         super(name);
         this.title = title;
     }
 
-    public abstract WorkItemType getType();
+    public abstract IssueType getType();
     
     public String getTitle() {
         return title;
-    }
-
-    public Resource getOwner() {
-        return owner;
     }
 
     public void setEpic(String epic) {
@@ -100,7 +95,7 @@ public abstract class WorkItem extends Model {
         this.qaDays = qaDays;
     }
 
-    public double getQaDays() {
+    public double getQADays() {
         return qaDays;
     }
 }

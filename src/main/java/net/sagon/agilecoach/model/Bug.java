@@ -1,6 +1,6 @@
 package net.sagon.agilecoach.model;
 
-public class Bug extends WorkItem {
+public class Bug extends Issue {
     private static final long serialVersionUID = -2593211761819583243L;
 
     public Bug() {
@@ -8,8 +8,8 @@ public class Bug extends WorkItem {
     }
 
     @Override
-    public WorkItemType getType() {
-        return WorkItemType.BUG;
+    public IssueType getType() {
+        return IssueType.BUG;
     }
 
 }

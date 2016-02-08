@@ -14,9 +14,9 @@
 
         <jsp.version>2.2</jsp.version>
         <jstl.version>1.2</jstl.version>
-        <servlet.version>2.5</servlet.version>
+        <servlet.version>3.1.0</servlet.version>
 
-        <spring-framework.version>3.2.3.RELEASE</spring-framework.version>
+        <spring-framework.version>4.2.4.RELEASE</spring-framework.version>
 
         <apache.commons.version>3.4</apache.commons.version>
         <apache.commons.collections.version>4.1</apache.commons.collections.version>
@@ -44,7 +44,7 @@
 
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
+            <artifactId>javax.servlet-api</artifactId>
             <version>${servlet.version}</version>
             <scope>provided</scope>
         </dependency>

@@ -2,17 +2,17 @@ package net.sagon.agilecoach.model;
 
 import net.sagon.agilecoach.AgileCoachException;
 
-public enum WorkItemType {
+public enum IssueType {
     STORY(Story.class), 
     BUG(Bug.class);
 
-    private Class<? extends WorkItem> clazz;
+    private Class<? extends Issue> clazz;
 
-    WorkItemType(Class<? extends WorkItem> clazz) {
+    IssueType(Class<? extends Issue> clazz) {
         this.clazz = clazz;
     }
     
-    public WorkItem getWorkItem() {
+    public Issue getWorkItem() {
         try {
             return clazz.newInstance();
         }

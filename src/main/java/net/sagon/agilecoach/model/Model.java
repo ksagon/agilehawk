@@ -10,6 +10,11 @@ public class Model extends ReflectionToStringAdapter {
     public Model() {
     }
     
+    public Model(long id, String name) {
+    	this.id = id;
+        this.name = name;
+    }
+
     public Model(String name) {
         this.name = name;
     }

@@ -1,13 +1,13 @@
 package net.sagon.agilecoach.model;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.number.IsCloseTo.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.number.IsCloseTo.closeTo;
+import static org.junit.Assert.assertThat;
 
-import java.text.SimpleDateFormat;
-
-import net.sagon.agilecoach.model.Resource;
-import net.sagon.agilecoach.model.Story;
+import java.time.Clock;
+import java.time.Period;
+import java.time.ZonedDateTime;
+import java.util.Random;
 
 import org.junit.Test;
 
@@ -29,22 +29,16 @@ public class ResourceTest {
     }
 
     @Test
-    public void canGetResourceStories() throws Exception {
-        givenDefaultResource();
-        assertNotNull(resource.getStories());
-    }
-    
-    @Test
     public void canAddResourceStory() throws Exception {
         givenDefaultResource();
-        whenAddingStories(1);
+        whenAddingStoriesBetween(1, "2016-02-01", "2016-02-08");
         thenStoryCountIs(1);
     }
     
     @Test
     public void whenStoryCountIs1InA1WeekPeriod_thenWeeklyStoryVelocityIs1() throws Exception {
         givenDefaultResource();
-        whenAddingStories(1);
+        whenAddingStoriesBetween(1, "2016-02-01", "2016-02-08");
         assertPeriodStoryVelocity("2016-02-01", "2016-02-08", 1.0);
     }
 
@@ -57,22 +51,76 @@ public class ResourceTest {
     @Test
     public void whenStoryCountIs1InA2WeekPeriod_thenWeeklyStoryVelocityIsPoint5() throws Exception {
         givenDefaultResource();
-        whenAddingStories(1);
+        whenAddingStoriesBetween(1, "2016-02-01", "2016-02-15");
         assertPeriodStoryVelocity("2016-02-01", "2016-02-15", 0.5);
     }
 
+    @Test
+    public void canAddResourceBug() throws Exception {
+        givenDefaultResource();
+        whenAddingBugs(1);
+        thenBugCountIs(1);
+    }
+
+    @Test
+    public void whenBugCountIs1InA1WeekPeriod_thenWeeklyBugVelocityIs1() throws Exception {
+        givenDefaultResource();
+        whenAddingBugs(1);
+        assertPeriodBugVelocity("2016-02-01", "2016-02-08", 1.0);
+    }
+
+    @Test
+    public void whenNoBugsAreDelivered_thenWeeklyBugVelocityIs0() throws Exception {
+        givenDefaultResource();
+        assertPeriodBugVelocity("2016-02-01", "2016-02-08", 0.0);
+    }
+
+    @Test
+    public void whenBugCountIs1InA2WeekPeriod_thenWeeklyBugVelocityIsPoint5() throws Exception {
+        givenDefaultResource();
+        whenAddingBugs(1);
+        assertPeriodBugVelocity("2016-02-01", "2016-02-15", 0.5);
+    }
+
     private void assertPeriodStoryVelocity(String start, String end, double expectedVelocity) throws Exception {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        assertThat(resource.getWeeklyStoryVelocity(sdf.parse(start) , sdf.parse(end)), closeTo(expectedVelocity, 0.001));
+        assertThat(resource.getWeeklyStoryVelocity(ZonedDateTime.parse(start+"T00:00:00-06:00") , ZonedDateTime.parse(end+"T00:00:00-06:00")), closeTo(expectedVelocity, 0.001));
     }
 
     private void thenStoryCountIs(int count) {
         assertThat(resource.getStories().size(), is(count));
     }
 
-    private void whenAddingStories(int count) {
+    private void whenAddingStoriesBetween(int count, String start, String end) {
         for( int i = 0; i < count; i++ ) {
-            resource.addStory(new Story());
+        	Story s = new Story();
+        	s.setName(String.format("ST-%s", i));
+        	s.setId(i);
+        	s.setResolutionDate(generateResolutionDateInRange(start, end));
+            resource.addStory(s);
+        }
+    }
+
+    private ZonedDateTime generateResolutionDateInRange(String start, String end) {
+    	ZonedDateTime s = ZonedDateTime.parse(start+"T00:00:00-06:00");
+    	ZonedDateTime e = ZonedDateTime.parse(end+"T00:00:00-06:00");
+
+    	Period p = Period.between(s.toLocalDate(), e.toLocalDate());
+    	int randomDays = (new Random(Clock.systemUTC().millis())).ints(0, p.getDays()).iterator().next();
+
+    	return s.plusDays(randomDays);
+	}
+
+	private void assertPeriodBugVelocity(String start, String end, double expectedVelocity) throws Exception {
+        assertThat(resource.getWeeklyBugVelocity(ZonedDateTime.parse(start+"T00:00:00-06:00") , ZonedDateTime.parse(end+"T00:00:00-06:00")), closeTo(expectedVelocity, 0.001));
+    }
+
+    private void thenBugCountIs(int count) {
+        assertThat(resource.getBugs().size(), is(count));
+    }
+
+    private void whenAddingBugs(int count) {
+        for( int i = 0; i < count; i++ ) {
+            resource.addBug(new Bug());
         }
     }
 
@@ -81,7 +129,7 @@ public class ResourceTest {
     }
 
     private void given100kSeniorDeveloperJohnDoe() {
-        resource = new Resource("John Doe", 100000.0);
+        resource = new Resource(101, "John Doe", 100000.0);
     }
     
     private void thenAssertDefaults() {
