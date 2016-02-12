@@ -118,10 +118,12 @@ public class TeamTest {
 
         for( int i = 0; i < resourceCount; i++ ) {
             Resource r = new Resource();
+            r.setId(i);
             for( int j = 0; j < storiesPerResource; j++ ) {
+            	long storyId = (i*storiesPerResource)+j;
             	Story s = new Story();
-            	s.setName(String.format("ST-%s", i));
-            	s.setId(i);
+            	s.setName(String.format("ST-%s", storyId));
+            	s.setId(storyId);
             	s.setResolutionDate(generateResolutionDateInRange(start, end));
                 r.addStory(s);
             }

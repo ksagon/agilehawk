@@ -5,3 +5,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <c:set var="contextRoot" value="${pageContext.request.contextPath}" />
+
+<!--  ${contextRoot} -->
