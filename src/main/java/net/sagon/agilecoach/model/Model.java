@@ -1,16 +1,20 @@
 package net.sagon.agilecoach.model;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.annotation.Id;
+
 
 public class Model extends ReflectionToStringAdapter {
     private static final long serialVersionUID = 1402559319987770774L;
 
-    private long id  = -1;
+    @Id
+    private String id = "";
     private String name = "";
 
     public Model() {
     }
     
-    public Model(long id, String name) {
+    public Model(String id, String name) {
     	this.id = id;
         this.name = name;
     }
@@ -19,11 +23,11 @@ public class Model extends ReflectionToStringAdapter {
         this.name = name;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
     
@@ -36,12 +40,12 @@ public class Model extends ReflectionToStringAdapter {
     }
 
     public boolean hasId() {
-        return id != -1;
+        return StringUtils.isNotEmpty(id);
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj != null && this.id == ((Model)obj).id && this.id != -1;
+        return obj != null && this.id.equals(((Model)obj).id) && StringUtils.isNotEmpty(this.id);
     }
 
     @Override

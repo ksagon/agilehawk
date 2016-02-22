@@ -1,6 +1,6 @@
 package net.sagon.agilecoach.model;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 public class Team {
 
     private Set<Resource> resources = new HashSet<Resource>();
+	private LocalDate start;
+	private LocalDate end;
 
     public Team() {
     }
@@ -17,6 +19,22 @@ public class Team {
     public Team(List<Story> stories, List<Bug> bugs) {
     	stories.forEach(story -> this.addStory(story));
     	bugs.forEach(bug -> this.addBug(bug));
+	}
+
+	public LocalDate getStart() {
+		return start;
+	}
+
+	public LocalDate getEnd() {
+		return end;
+	}
+
+	public void setStart(LocalDate start) {
+		this.start = start;
+	}
+
+	public void setEnd(LocalDate end) {
+		this.end = end;
 	}
 
 	public Set<Resource> getResources() {
@@ -37,9 +55,17 @@ public class Team {
 		r.addBug(bug);
 	}
 
-	public double getPeriodStoryVelocity(ZonedDateTime start, ZonedDateTime end) {
-        return resources.stream().collect(Collectors.averagingDouble( resource -> resource.getWeeklyStoryVelocity(start, end) ));
+	public double getPeriodStoryVelocity(LocalDate start, LocalDate end) {
+		if( start == null || end == null ) {
+			return 0.0;
+		}
+
+		return resources.stream().collect(Collectors.averagingDouble( resource -> resource.getWeeklyStoryVelocity(start, end) ));
     }
+
+	public double getPeriodStoryVelocity() {
+        return getPeriodStoryVelocity(start, end);
+	}
 
 	private Resource findOrAddResource(Issue issue) {
 		Resource r = issue.getResolvedBy();

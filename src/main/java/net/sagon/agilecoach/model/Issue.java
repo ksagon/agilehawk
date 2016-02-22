@@ -2,6 +2,8 @@ package net.sagon.agilecoach.model;
 
 import java.time.ZonedDateTime;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
+
 public abstract class Issue extends Model {
     private static final long serialVersionUID = -913600440903864934L;
 
@@ -9,9 +11,15 @@ public abstract class Issue extends Model {
     private String epic;
     private String status = "Open";
     private ZonedDateTime resolutionDate;
+    
+    @DBRef
     private Resource resolvedBy = new Resource("Unassigned");
+
     private ZonedDateTime createdDate;
+    
+    @DBRef
     private Resource createdBy = new Resource("Unassigned");
+
     private double openDays;
     private double devDays;
     private double qaDays;

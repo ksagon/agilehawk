@@ -2,9 +2,10 @@ package net.sagon.agilecoach.model;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.number.IsCloseTo.closeTo;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 import java.time.Clock;
+import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZonedDateTime;
 import java.util.Random;
@@ -20,6 +21,17 @@ public class ResourceTest {
         givenDefaultResource();
         thenAssertDefaults();
     }
+
+    @Test
+	public void canSetStartAndEndDatesOnResource() throws Exception {
+        givenDefaultResource();
+        
+        resource.setStartDate(LocalDate.parse("2016-01-01"));
+        resource.setEndDate(LocalDate.parse("2016-01-30"));
+
+        assertThat(resource.getStartDate(), is(LocalDate.parse("2016-01-01")));
+		assertThat(resource.getEndDate(), is(LocalDate.parse("2016-01-30")));
+	}
 
     @Test
     public void oneHundredKJohnDoeHas50CostBasis() throws Exception {
@@ -81,9 +93,16 @@ public class ResourceTest {
         whenAddingBugs(1);
         assertPeriodBugVelocity("2016-02-01", "2016-02-15", 0.5);
     }
+    
+    @Test
+	public void whenStoryCountIs1InA1DayPeriod_thenWeeklyStoryVelocityIs7() throws Exception {
+        givenDefaultResource();
+        whenAddingStoriesBetween(1, "2016-02-01", "2016-02-02");
+        assertPeriodStoryVelocity("2016-02-01", "2016-02-02", 7.0);
+	}
 
     private void assertPeriodStoryVelocity(String start, String end, double expectedVelocity) throws Exception {
-        assertThat(resource.getWeeklyStoryVelocity(ZonedDateTime.parse(start+"T00:00:00-06:00") , ZonedDateTime.parse(end+"T00:00:00-06:00")), closeTo(expectedVelocity, 0.001));
+        assertThat(resource.getWeeklyStoryVelocity(LocalDate.parse(start) , LocalDate.parse(end)), closeTo(expectedVelocity, 0.001));
     }
 
     private void thenStoryCountIs(int count) {
@@ -94,7 +113,7 @@ public class ResourceTest {
         for( int i = 0; i < count; i++ ) {
         	Story s = new Story();
         	s.setName(String.format("ST-%s", i));
-        	s.setId(i);
+        	s.setId(Integer.toString(i));
         	s.setResolutionDate(generateResolutionDateInRange(start, end));
             resource.addStory(s);
         }
@@ -129,7 +148,7 @@ public class ResourceTest {
     }
 
     private void given100kSeniorDeveloperJohnDoe() {
-        resource = new Resource(101, "John Doe", 100000.0);
+        resource = new Resource("101", "John Doe", 100000.0);
     }
     
     private void thenAssertDefaults() {

@@ -1,24 +1,51 @@
 package net.sagon.agilecoach.model;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.number.IsCloseTo.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.number.IsCloseTo.closeTo;
 import static org.junit.Assert.*;
 
 import java.time.Clock;
+import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.sagon.agilecoach.model.Resource;
-import net.sagon.agilecoach.model.Story;
-import net.sagon.agilecoach.model.Team;
-
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 public class TeamTest {
     private Team team;
+
+    @Test
+	public void canSetTeamStartAndEnd() throws Exception {
+        givenTeamWithResources(0, 0, "2016-02-04", "2016-02-11");
+
+        assertThat(team.getStart(), is(LocalDate.parse("2016-02-04")));
+    	assertThat(team.getEnd(), is(LocalDate.parse("2016-02-11")));
+	}
+
+    @Test
+	public void canGetVelocityFromATeamWithASetStartAndEnd_when2ResourcesDeliver4StoriesIn1Week() throws Exception {
+        givenTeamWithResources(2, 2, "2016-02-04", "2016-02-11");
+
+        assertInitializedPeriodStoryVelocity(2.0);
+	}
+
+    @Test
+	public void anUninitializedTeamHas0Velocity() throws Exception {
+        givenTeamWithResources(0, 0, null, null);
+
+        assertInitializedPeriodStoryVelocity(0.0);
+    }
+
+    @Test
+	public void anUninitializedTeamWithResourcesHas0Velocity() throws Exception {
+        givenTeamWithResources(1, 1, null, null);
+
+        assertInitializedPeriodStoryVelocity(0.0);
+    }
 
     @Test
     public void canAddResourcesToTeam() throws Exception {
@@ -115,15 +142,23 @@ public class TeamTest {
 
     private void givenTeamWithResources(int resourceCount, int storiesPerResource, String start, String end) {
         team = new Team();
+        
+        if( StringUtils.isNotEmpty(start) ) {
+        	team.setStart(LocalDate.parse(start));
+        }
+        
+        if( StringUtils.isNotEmpty(end) ) {
+        	team.setEnd(LocalDate.parse(end));
+        }
 
         for( int i = 0; i < resourceCount; i++ ) {
             Resource r = new Resource();
-            r.setId(i);
+            r.setId(Integer.toString(i));
             for( int j = 0; j < storiesPerResource; j++ ) {
-            	long storyId = (i*storiesPerResource)+j;
+            	int storyId = (i*storiesPerResource)+j;
             	Story s = new Story();
             	s.setName(String.format("ST-%s", storyId));
-            	s.setId(storyId);
+            	s.setId(Integer.toString(storyId));
             	s.setResolutionDate(generateResolutionDateInRange(start, end));
                 r.addStory(s);
             }
@@ -133,6 +168,14 @@ public class TeamTest {
     }
 
     private ZonedDateTime generateResolutionDateInRange(String start, String end) {
+    	if( StringUtils.isEmpty(start) ) {
+    		start = "2016-02-01";
+    	}
+
+    	if( StringUtils.isEmpty(end) ) {
+    		end = "2016-02-08";
+    	}
+
     	ZonedDateTime s = ZonedDateTime.parse(start+"T00:00:00-06:00");
     	ZonedDateTime e = ZonedDateTime.parse(end+"T00:00:00-06:00");
 
@@ -142,7 +185,11 @@ public class TeamTest {
     	return s.plusDays(randomDays);
 	}
     
+    private void assertInitializedPeriodStoryVelocity(double expectedVelocity) {
+        assertThat(team.getPeriodStoryVelocity(), closeTo(expectedVelocity, 0.001));
+	}
+
     private void assertPeriodStoryVelocity(String start, String end, double expectedVelocity) throws Exception {
-        assertThat(team.getPeriodStoryVelocity(ZonedDateTime.parse(start+"T00:00:00-06:00") , ZonedDateTime.parse(end+"T00:00:00-06:00")), closeTo(expectedVelocity, 0.001));
+        assertThat(team.getPeriodStoryVelocity(LocalDate.parse(start) , LocalDate.parse(end)), closeTo(expectedVelocity, 0.001));
     }
 }

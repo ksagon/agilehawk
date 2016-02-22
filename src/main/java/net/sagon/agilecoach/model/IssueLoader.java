@@ -32,7 +32,7 @@ public class IssueLoader {
             case STORY:
                 stories.add((Story)issue);
                 break;
-            
+
             case BUG:
                 bugs.add((Bug)issue);
         }

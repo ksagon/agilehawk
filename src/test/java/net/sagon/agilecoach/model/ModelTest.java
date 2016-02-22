@@ -97,7 +97,7 @@ public class ModelTest {
 
     private void givenInitializedModel() {
         givenDefaultModel();
-        model.setId(100);
+        model.setId("100");
         model.setName("Initialized Model");
     }
     
@@ -107,13 +107,13 @@ public class ModelTest {
     }
     
     private void whenInitializingModelsToTheSameIds() {
-        model.setId(100);
-        model2.setId(100);
+        model.setId("100");
+        model2.setId("100");
     }
 
     private void whenInitializingModelsToDifferentIds() {
-        model.setId(100);
-        model2.setId(101);
+        model.setId("100");
+        model2.setId("101");
     }
     
     private void thenDefaultModelIdsAreEqualButModelsAreNot() {
@@ -132,7 +132,7 @@ public class ModelTest {
     }
 
     private void thenAssertDefaults() {
-        assertThat(model.getId(), is(-1l));
+        assertThat(model.getId(), is(""));
         assertThat(model.getName(), is(""));
     }
 

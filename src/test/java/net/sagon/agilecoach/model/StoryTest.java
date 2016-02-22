@@ -42,7 +42,7 @@ public class StoryTest {
         assertThat(story.getOpenDays(), closeTo(1.34, 0.001));
         assertThat(story.getDevDays(), closeTo(5.3, 0.001));
         assertThat(story.getQADays(), closeTo(3.45, 0.001));
-        assertEquals("Story[title=Story,epic=EP-1,status=Open,resolutionDate=2016-02-04T00:00-06:00,resolvedBy=Resource[salary=150000.0,weeklyHours=40.0,stories=[],bugs=[],id=100,name=Bob Johnson],createdDate=2016-02-01T00:00-06:00,createdBy=Resource[salary=150000.0,weeklyHours=40.0,stories=[],bugs=[],id=101,name=Bob Johnson],openDays=1.34,devDays=5.3,qaDays=3.45,id=-1,name=ST-1]", story.toString());
+        assertEquals("Story[title=Story,epic=EP-1,status=Open,resolutionDate=2016-02-04T00:00-06:00,resolvedBy=Resource[salary=150000.0,weeklyHours=40.0,stories=[],bugs=[],start=<null>,end=<null>,id=100,name=Bob Johnson],createdDate=2016-02-01T00:00-06:00,createdBy=Resource[salary=150000.0,weeklyHours=40.0,stories=[],bugs=[],start=<null>,end=<null>,id=101,name=Bob Johnson],openDays=1.34,devDays=5.3,qaDays=3.45,id=,name=ST-1]", story.toString());
 	}
 
     private void givenInitializedStory() {
@@ -61,14 +61,14 @@ public class StoryTest {
 
     private Resource givenResource(int id) {
     	Resource r = new Resource();
-    	r.setId(id);
+    	r.setId(Integer.toString(id));
 
     	return r;
 	}
 
 	private void givenDefaultInitializedStory() {
         story = new Story();
-        story.setId(1);
+        story.setId("1");
     }
 
     private void thenAssertDefaults() {
