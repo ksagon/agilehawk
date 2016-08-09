@@ -1,11 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="edo" tagdir="/WEB-INF/tags/edo" %>
+<%@ taglib prefix="hawk" tagdir="/WEB-INF/tags/hawk" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <%@ attribute name="id" required="false" description="A DOM id for the outer DIV around the input group." %>
 
-<%@ attribute name="label" required="false" description="Applies a label to the input group. Attempts to use the provided label as a message code for the i18n message bundle, and falls back to using the label itself. If the label should not be visible, use <code>labelClass='sr-only'</code> to preserve accessibility." %>
+<%@ attribute name="label" required="false" description="Applies a label to the input group. Attempts to use the provided label as a message code for the i18n message bundle, and falls back to using the label itself. If the label should not be visible, use labelClass='sr-only' to preserve accessibility." %>
 <%@ attribute name="labelCode" required="false" description="Deprecated. Use the 'label' attribute instead." %>
 
 <%@ attribute name="required" required="false" %>
@@ -34,7 +34,7 @@
         <span class="spacer invisible"></span>
         <label class="${required ? 'required-label' : ''}">${label}
         <c:if test="${hasPopoverHelp}">
-            <edo:popoverHelp id="${popoverHelpId}" title="${popoverHelpTitle}" message="${popoverHelpMessage}" />
+            <hawk:popoverHelp id="${popoverHelpId}" title="${popoverHelpTitle}" message="${popoverHelpMessage}" />
         </c:if>
         </label>
     </span>

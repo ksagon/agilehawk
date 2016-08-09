@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="edo" tagdir="/WEB-INF/tags/edo" %>
+<%@ taglib prefix="hawk" tagdir="/WEB-INF/tags/hawk" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
@@ -9,7 +9,7 @@
 <%@ attribute name="path" required="true" %>
 <%@ attribute name="inputField" required="true" fragment="true" %>
 
-<%@ attribute name="label" required="false" description="Applies a label to the input. Attempts to use the provided label as a message code for the i18n message bundle, and falls back to using the label itself. If the label should not be visible, use <code>labelClass='sr-only'</code> to preserve accessibility." %>
+<%@ attribute name="label" required="false" description="Applies a label to the input. Attempts to use the provided label as a message code for the i18n message bundle, and falls back to using the label itself. If the label should not be visible, use labelClass='sr-only' to preserve accessibility." %>
 <%@ attribute name="labelCode" required="false" description="Deprecated. Use the 'label' attribute instead." %>
 <%@ attribute name="required" required="false" %>
 <%@ attribute name="colspan" required="false" description="Overrides the default input colspan width. Format is '[mediaSize]-[span]+' e.g. 'xs-12 md-6' or 'xs-10 sm-8 md-6 lg-4' or just 'lg-3'." %>
@@ -40,7 +40,7 @@
     <c:set var="readonlyMessage"><spring:bind path="${path}">${status.value}</spring:bind></c:set>
 </c:if>
 <c:if test="${empty readonlyMessageHtmlEscape or readonlyMessageHtmlEscape}">
-    <c:set var="readonlyMessage"><edo:out value="${readonlyMessage}" /></c:set>
+    <c:set var="readonlyMessage"><hawk:out value="${readonlyMessage}" /></c:set>
 </c:if>
 
 <c:set var="inputControl">
@@ -60,10 +60,10 @@
         ${inputControl}
     </c:when>
     <c:otherwise>
-        <edo:formControlGroup id="${controlGroupId}" cssClass="${hasError} ${controlGroupClass}" colspan="${colspan}" controlsClass="${controlsClass}"
+        <hawk:formControlGroup id="${controlGroupId}" cssClass="${hasError} ${controlGroupClass}" colspan="${colspan}" controlsClass="${controlsClass}"
                               label="${label}" labelCode="${labelCode}" labelClass="${labelClass}" labelFor="${baseId}" required="${required}"
                               popoverHelpTitle="${popoverHelpTitle}"  popoverHelpMessage="${popoverHelpMessage}" inlineHelpMessage="${inlineHelpMessage}">
             ${inputControl}
-        </edo:formControlGroup>
+        </hawk:formControlGroup>
     </c:otherwise>
 </c:choose>

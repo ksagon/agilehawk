@@ -34,20 +34,20 @@
         <button id="${id}_cancel_btn" class="btn btn-link" data-dismiss="modal">
             <spring:message code="ux.action.cancel" text="Cancel" />
         </button>
-        <button id="${id}_confirm_btn" class="btn btn-danger" onclick="edo.modal.deleteAction['${id}']();">
+        <button id="${id}_confirm_btn" class="btn btn-danger" onclick="hawk.modal.deleteAction['${id}']();">
             <spring:message code="ux.action.delete" text="Delete ${objectType}" arguments="${objectType}" />
         </button>
     </jsp:attribute>
 </hawk:modal>
 <script type="text/javascript">
-edo.modal.deleteAction = edo.modal.deleteAction || {};
-edo.modal.deleteAction["${id}"] = function() {
-    var modal = edo.util.getElement("${id}");    
+hawk.modal.deleteAction = hawk.modal.deleteAction || {};
+hawk.modal.deleteAction["${id}"] = function() {
+    var modal = hawk.util.getElement("${id}");    
     $.ajax({
         url: "${deleteUrl}",
         type: "DELETE",
         success: function(response) {
-            edo.form.processFormResponse(response, modal, modal, function() {
+            hawk.form.processFormResponse(response, modal, modal, function() {
                 modal.modal("hide");
                 $.EventBus("${onDeleteEvent}").publish("${eventData}");
             });

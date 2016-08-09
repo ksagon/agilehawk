@@ -1,7 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="edo" tagdir="/WEB-INF/tags/edo" %>
+<%@ taglib prefix="hawk" tagdir="/WEB-INF/tags/hawk" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-
 
 <%@ attribute name="path" required="true" %>
 <%@ attribute name="inputField" required="true" fragment="true" %>
@@ -9,7 +8,7 @@
 <%@ attribute name="selectPlacement" required="true" description="valid values are 'prepend' (select on left) and 'append' (select on right)" %>
 <%@ attribute name="selectItems" required="true" type="java.util.Map" %>
 
-<%@ attribute name="label" required="false" description="Applies a label to the group. Attempts to use the provided label as a message code for the i18n message bundle, and falls back to using the label itself. If the label should not be visible, use <code>labelClass='sr-only'</code> to preserve accessibility." %>
+<%@ attribute name="label" required="false" description="Applies a label to the group. Attempts to use the provided label as a message code for the i18n message bundle, and falls back to using the label itself. If the label should not be visible, use labelClass='sr-only' to preserve accessibility." %>
 <%@ attribute name="labelCode" required="false" description="Deprecated. Use the 'label' attribute instead." %>
 <%@ attribute name="required" required="false" %>
 <%@ attribute name="placeholder" required="false" description="Value for placeholder attribute of the input. Attempts to use the provided placeholder as a message code for the i18n message bundle, and falls back to using the placeholder itself." %>
@@ -31,11 +30,11 @@
 </c:if>
 
 <c:set var="inputSelectButton">
-    <edo:inputSelectButton path="${selectPath}" items="${selectItems}" inputOnly="true"
+    <hawk:inputSelectButton path="${selectPath}" items="${selectItems}" inputOnly="true"
                            buttonContainerClass="input-group-btn" readonly="${readonly}" placeholder="${placeholder}" />
 </c:set>
 
-<edo:inputBase path="${path}" label="${label}" labelCode="${labelCode}" required="${required}" controlGroupClass="${controlGroupClass}" labelClass="${labelClass}"
+<hawk:inputBase path="${path}" label="${label}" labelCode="${labelCode}" required="${required}" controlGroupClass="${controlGroupClass}" labelClass="${labelClass}"
                readonly="${readonly}" inputOnly="${inputOnly}" colspan="${colspan}">
     <jsp:attribute name="inputField">
         <div class="input-group">
@@ -48,4 +47,4 @@
             </c:if>
         </div>
     </jsp:attribute>
-</edo:inputBase>
+</hawk:inputBase>

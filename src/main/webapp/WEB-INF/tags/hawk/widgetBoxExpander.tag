@@ -40,7 +40,7 @@
 
 <div class="panel collapsible ${panelClass}">
     <div class="panel-heading" data-toggle="collapse" data-target="#${id}-c">
-        <h5><a>${title}</a></h5>
+        <h3 style="margin-top: 2px; margin-bottom: 2px;"><a>${title}</a></h3>
     </div>
     <div id="${id}-c" class="${expanderClass}">
         <div>

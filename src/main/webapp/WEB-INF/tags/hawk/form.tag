@@ -6,12 +6,13 @@
 <%@ attribute name="actionUrl" required="true" rtexprvalue="true" %>
 <%@ attribute name="validateUrl" required="true" rtexprvalue="true" %>
 <%@ attribute name="layout" required="true" description="Valid values are 'horizontal', 'vertical', 'left-align', and 'navbar'" %>
+<%@ attribute name="method" required="false" %>
 
 <%@ attribute name="cssClass" required="false" %>
 
 <spring:url var="formUrl" value="${validateUrl}" />
 
-<hawk:formBase id="${id}" modelAttribute="${modelAttribute}" actionUrl="${actionUrl}" layout="${layout}" cssClass="${cssClass}">
+<hawk:formBase id="${id}" modelAttribute="${modelAttribute}" actionUrl="${actionUrl}" layout="${layout}" cssClass="${cssClass}" method="${method}">
     <jsp:doBody />
 </hawk:formBase>
 <script>

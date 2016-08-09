@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="edo" tagdir="/WEB-INF/tags/edo" %>
+<%@ taglib prefix="hawk" tagdir="/WEB-INF/tags/hawk" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <%@ attribute name="id" required="true" %>
@@ -40,7 +40,7 @@
 <c:if test="${not requestScope.ignoreInnerSelectButtonScript}">
     <script type="text/javascript">
         $(document).ready(function() {
-            new edo.tag.input.SelectButton("${id}");
+            new hawk.tag.input.SelectButton("${id}");
         });
     </script>
 </c:if>

@@ -1,11 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="edo" tagdir="/WEB-INF/tags/edo" %>
+<%@ taglib prefix="hawk" tagdir="/WEB-INF/tags/hawk" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <%@ attribute name="path" required="true" %>
 <%@ attribute name="currencyCode" required="true" description="The currency code that shows up on the left addon of the input"%>
 
-<%@ attribute name="label" required="false" description="Applies a label to the input. Attempts to use the provided label as a message code for the i18n message bundle, and falls back to using the label itself. If the label should not be visible, use <code>labelClass='sr-only'</code> to preserve accessibility." %>
+<%@ attribute name="label" required="false" description="Applies a label to the input. Attempts to use the provided label as a message code for the i18n message bundle, and falls back to using the label itself. If the label should not be visible, use labelClass='sr-only' to preserve accessibility." %>
 <%@ attribute name="labelCode" required="false" description="Deprecated. Use the 'label' attribute instead." %>
 <%@ attribute name="id" required="false" description="If empty, the element's path attribute will be used for its id attribute" %>
 <%@ attribute name="placeholder" required="false" description="Value for placeholder attribute of the input. Uses the provided placeholder as a message code for the i18n message bundle." %>
@@ -31,13 +31,13 @@
     <spring:message var="placeholder" code="${placeholderText}" text="${placeholderText}" />
 </c:if>
 
-<edo:inputBase path="${path}" label="${label}" labelCode="${labelCode}" required="${required}" controlGroupClass="input-currency ${controlGroupClass}" labelClass="${labelClass}"
+<hawk:inputBase path="${path}" label="${label}" labelCode="${labelCode}" required="${required}" controlGroupClass="input-currency ${controlGroupClass}" labelClass="${labelClass}"
                readonly="${readonly}" id="${id}" inputOnly="${inputOnly}" colspan="${colspan}"
                popoverHelpTitle="${popoverHelpTitle}"  popoverHelpMessage="${popoverHelpMessage}" inlineHelpMessage="${inlineHelpMessage}">
     <jsp:attribute name="inputField">
         <div class="input-group">
             <span class="input-group-addon currency-descriptor">${currencyCode}</span>
-            <edo:inputNumber path="${path}" id="${id}" maxFractionDigits="${maxFractionDigits}" minFractionDigits="${minFractionDigits}" placeholder="${placeholder}" inputOnly="true" />
+            <hawk:inputNumber path="${path}" id="${id}" maxFractionDigits="${maxFractionDigits}" minFractionDigits="${minFractionDigits}" placeholder="${placeholder}" inputOnly="true" />
         </div>
     </jsp:attribute>
-</edo:inputBase>
+</hawk:inputBase>

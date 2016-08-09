@@ -17,9 +17,11 @@
     <jsp:doBody />
 </hawk:formBase>
 <script>
-    new hawk.form.Form("${id}", "${formUrl}", function(formResponse) {
+	rsp = function(formResponse) {
         if (typeof ${onSuccess} === "function") {
-            edo.util.call(${onSuccess}, this, formResponse);
+            hawk.util.call(${onSuccess}, this, formResponse);
         }
-    });
+    }
+
+    new hawk.form.Form("${id}", "${formUrl}", rsp);
 </script>

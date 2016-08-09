@@ -1,12 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="edo" tagdir="/WEB-INF/tags/edo" %>
+<%@ taglib prefix="hawk" tagdir="/WEB-INF/tags/hawk" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <%@ attribute name="path" required="true" %>
 <%@ attribute name="id" required="false" %>
 
-<%@ attribute name="label" required="false" description="Applies a label to the input. Attempts to use the provided label as a message code for the i18n message bundle, and falls back to using the label itself. If the label should not be visible, use <code>labelClass='sr-only'</code> to preserve accessibility." %>
+<%@ attribute name="label" required="false" description="Applies a label to the input. Attempts to use the provided label as a message code for the i18n message bundle, and falls back to using the label itself. If the label should not be visible, use labelClass='sr-only' to preserve accessibility." %>
 <%@ attribute name="labelCode" required="false" description="Deprecated. Use the 'label' attribute instead." %>
 <%@ attribute name="placeholder" required="false" description="Value for placeholder attribute of the input. Attempts to use the provided placeholder as a message code for the i18n message bundle, and falls back to using the placeholder itself." %>
 <%@ attribute name="placeholderText" required="false" description="deprecated, use placeholder instead" %>
@@ -41,7 +41,7 @@
 </c:if>
 
 <c:set var="id" value="${empty pageScope.id ? pageScope.path : pageScope.id}" />
-<edo:inputBase path="${path}" label="${label}" labelCode="${labelCode}" required="${required}" controlGroupClass="${controlGroupClass}"
+<hawk:inputBase path="${path}" label="${label}" labelCode="${labelCode}" required="${required}" controlGroupClass="${controlGroupClass}"
                labelClass="${labelClass}" readonly="${readonly}" inputOnly="${inputOnly}" colspan="${colspan}"
                popoverHelpTitle="${popoverHelpTitle}"  popoverHelpMessage="${popoverHelpMessage}" inlineHelpMessage="${inlineHelpMessage}">
     <jsp:attribute name="inputField">
@@ -59,4 +59,4 @@
              </c:otherwise>
          </c:choose>
     </jsp:attribute>
-</edo:inputBase>
+</hawk:inputBase>

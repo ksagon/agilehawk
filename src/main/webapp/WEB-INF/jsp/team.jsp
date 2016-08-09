@@ -2,71 +2,77 @@
 <%@ include file="/WEB-INF/jsp/site/taglib.jsp" %>
 
 <hawk:page pageTitle="page.team.title">
-	<hawk:widgetBoxExpander id="teamLoader" titleCode="page.team.load">
-    <form action="${contextRoot}/agile/team/load" enctype="multipart/form-data" class="form-horizontal" method="post">
-    <div class="row">
-        <div class="form-group col-md-12">
-            <div class="col-md-3">
-				<label class="control-label" for="issues"><spring:message code="page.team.label.issueSource"/></label>
-                <input type="file" name="issues" id="issues" class="form-control input-sm"/>
-            </div>
+	<script>
+	function addResource() {
+		$.ajax("/agilehawk/agile/team/${team.id}/resource/" + $('#resourceId .dropdown-menu li a.selected').text(), {
+			method: 'POST',
+			success: function(data, status, xhr) {
+				location.reload();
+			}
+		});
+	}
+	</script>
 
-            <div class="col-md-3">
-				<label class="control-label" for="start"><spring:message code="page.team.label.analysisStart"/></label>
-                <div class='input-group date' id='analysisStart-datepicker'>
-                    <input type='text' class="form-control" name="start" id="start" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-		        <script type="text/javascript">
-		            $(function () {
-		                $('#analysisStart-datepicker').datepicker( {format: 'yyyy-mm-dd'} );
-		            });
-		        </script>
-            </div>
+	<div class="container-fluid">
+	<div class="row">
+		<h1>Team ${team.name}</h1>
+	</div>
 
-            <div class="col-md-3">
-				<label class="control-label" for="start"><spring:message code="page.team.label.analysisEnd"/></label>
-                <div class='input-group date' id='analysisEnd-datepicker'>
-                    <input type='text' class="form-control" name="end" id="end" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-		        <script type="text/javascript">
-		            $(function () {
-		                $('#analysisEnd-datepicker').datepicker( {format: 'yyyy-mm-dd'} );
-		            });
-		        </script>
-            </div>
-        </div>
-    </div>
+	<div class="row" style="margin-bottom: 5px">
+		<form action="javascript:addResource()">
+		<div class="col-md-4"><hawk:selectButton items="${resources}" id="resourceId" value="value"/> 
+		<input type="submit" value="Add" class="btn btn-primary"/>
+		</div>
+		</form>
+	</div>
 
-    <div class="row">
-        <div class="form-actions floatRight col-md-3">
-            <input type="submit" value="Upload" class="btn btn-primary btn-sm">
-        </div>
-    </div>
-    </form>
-	</hawk:widgetBoxExpander>
+   	<div class="row">
+   		<div class="col-md-3">
+   		Team Velocity: From ${team.start} To ${team.end} -- <fmt:formatNumber value="${team.periodStoryVelocity}" maxFractionDigits="2" minFractionDigits="2" /> Stories / Wk
+   		</div>
+   	</div>
 
 	<hawk:widgetBoxExpander id="resources" titleCode="page.team.resources">
-    <div class="container-fluid">
-        <c:forEach var="resource" items="${team.resources}" varStatus="i">
-
-    	<c:if test="${i.index == 0}">
-    	<div class="row">
-    		<h2>Team Velocity: From ${team.start} To ${team.end} -- <fmt:formatNumber value="${team.periodStoryVelocity}" maxFractionDigits="2" minFractionDigits="2" /> Stories / Wk</h2>
-    	</div>
-		</c:if>
-
         <div class="row">
         	<table class="table table-striped table-condensed">
-                <tr>${resource.name}</tr>
+        	<thead>
+        		<tr>
+	        		<th>Resource</th>
+	        		<th>Start</th>
+	        		<th>End</th>
+    	    		<th>Story Velocity</th>
+        		</tr>
+        	</thead>
+        	<tbody>
+	        <c:forEach var="resource" items="${team.periodResources}" varStatus="i">
+                <tr>
+                	<td>${resource.name}</td>
+                	<td>${resource.start}</td>
+                	<td>${resource.end}</td>
+                	<td><fmt:formatNumber value="${resource.weeklyStoryVelocity}" maxFractionDigits="2" minFractionDigits="2" /></td>
+                	<td width="10%">
+                	  <a class="btn btn-xs btn-info" href="<c:url value='/agile/resource/${resource.id}' />"><i class="fa fa-eye"></i></a>
+                	  <button class="btn btn-xs btn-primary" data-toggle='modal-ajax' data-target="<c:url value='/agile/resourceDetails/${resource.id}?teamId=${team.id}' />"><i class="fa fa-edit"></i></button>
+                	  <button class="btn btn-xs btn-danger" data-toggle='modal-ajax' data-target="<c:url value='/agile/team/${team.id}/resource/${resource.id}/action/delete?modalId=${resource.id}&id=${resource.id}' />"><i class="fa fa-trash"></i></button>
+                	</td>
+               	</tr>
+	        </c:forEach>
+			</tbody>
             </table>
         </div>
-        </c:forEach>
-    </div>
+
 	</hawk:widgetBoxExpander>
+	</div>
+	
+    <script>
+	  $.EventBus("teamResourceDeleted").subscribe(function(event) {
+		location.reload();
+	  });
+
+      function successfulUpdate() {
+        $('#resource_modal').modal('hide');
+	    location.reload();
+      }
+    </script>
+	
 </hawk:page>

@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="edo" tagdir="/WEB-INF/tags/edo" %>
+<%@ taglib prefix="hawk" tagdir="/WEB-INF/tags/hawk" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
@@ -7,7 +7,7 @@
 
 <%@ attribute name="multiplier" required="false" description="Multiplier for the number, e.g. to display a percent as '55' instead of '.55', you would use a multiplier of 100." %>
 
-<%@ attribute name="label" required="false" description="Applies a label to the input. Attempts to use the provided label as a message code for the i18n message bundle, and falls back to using the label itself. If the label should not be visible, use <code>labelClass='sr-only'</code> to preserve accessibility." %>
+<%@ attribute name="label" required="false" description="Applies a label to the input. Attempts to use the provided label as a message code for the i18n message bundle, and falls back to using the label itself. If the label should not be visible, use labelClass='sr-only' to preserve accessibility." %>
 <%@ attribute name="id" required="false" description="If empty, the element's path attribute will be used for its id attribute" %>
 <%@ attribute name="labelCode" required="false" description="Deprecated. Use the 'label' attribute instead." %>
 <%@ attribute name="placeholder" required="false" description="Value for placeholder attribute of the input. Attempts to use the provided placeholder as a message code for the i18n message bundle, and falls back to using the placeholder itself." %>
@@ -51,7 +51,7 @@
 <fmt:formatNumber var="fmtNumberVal" value="${numberVal}" type="${type}" pattern="${pattern}" currencyCode="${currencyCode}"
             currencySymbol="${currencySymbol}" groupingUsed="${groupingUsed}" maxIntegerDigits="${maxIntegerDigits}"
             maxFractionDigits="${maxFractionDigits}" minIntegerDigits="${minIntegerDigits}" minFractionDigits="${minFractionDigits}" />
-<edo:inputText path="${path}" label="${label}" labelCode="${labelCode}" required="${required}" value="${fmtNumberVal}"
+<hawk:inputText path="${path}" label="${label}" labelCode="${labelCode}" required="${required}" value="${fmtNumberVal}"
                placeholder="${placeholder}" popoverHelpTitle="${popoverHelpTitle}"  popoverHelpMessage="${popoverHelpMessage}" inlineHelpMessage="${inlineHelpMessage}"
                controlGroupClass="${controlGroupClass}" inputClass="${inputClass} input-number" labelClass="${labelClass}"
                readonly="${readonly}" id="${id}" inputOnly="${inputOnly}" colspan="${colspan}" addonLabel="${addonLabel}"/>

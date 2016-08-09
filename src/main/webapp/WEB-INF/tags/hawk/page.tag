@@ -46,7 +46,7 @@
 </head>
 <body ${bodyCSSAttr}>
 
-<div class="container">
+<div class="container-fluid">
 
     <c:if test="${not empty pageLoadMessage}">
         <hawk:alertOverlay id="page_load_alert" alertType="${pageLoadMessageType}" showEvent="onPageLoad">
@@ -59,19 +59,7 @@
     <%@ include file="/WEB-INF/jsp/site/header.jsp"%>
 
     <div class="row">
-        <div class="col-sm-1 col-md-3 col-lg-2" id="sidebar">
-            <c:import url="/WEB-INF/jsp/site/sidebar.jsp" />
-        </div>
-        <div class="col-sm-11 col-md-9 col-lg-10" id="content">
-
-                <div class="row" id="content-header">
-                    <div class="col-xs-12 col-md-7">
-                        <h1>${h1}</h1>
-                    </div>
-                    <div class="col-xs-12 col-md-5" id="header-info">
-                        <jsp:invoke fragment="headerStatus" />
-                    </div>
-                </div>
+        <div class="col-sm-12 col-md-12 col-lg-12" id="content">
 
                 <jsp:invoke fragment="breadcrumbs" />
 

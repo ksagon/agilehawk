@@ -27,7 +27,7 @@
     <c:set var="id" value="${fn:replace(fn:replace(fn:substring(urlForLoop, 1, fn:length(urlForLoop)), '/', '_'),'#','')}"/>
 </c:if>
 
-    <li class="list-group-item">
+    <li>
         <a id="${id}" title="${title}" href="${href}" <c:if test="${hasSubItems}">data-toggle="collapse" data-parent="#sidebar-nav" data-target="#${id}-${icon}"</c:if>>
             <i class="fa fa-${icon} fa-fw"></i>
             <span>${title}</span>

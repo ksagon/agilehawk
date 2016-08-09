@@ -6,6 +6,7 @@
 <%@ attribute name="modelAttribute" required="true" rtexprvalue="true" %>
 <%@ attribute name="actionUrl" required="true" rtexprvalue="true" %>
 <%@ attribute name="layout" required="true" description="Valid values are 'horizontal', 'vertical', 'inline', 'left-align', and 'navbar'" %>
+<%@ attribute name="method" required="false" %>
 
 <%@ attribute name="cssClass" required="false" %>
 
@@ -14,8 +15,12 @@
     <c:if test="${layout ne 'navbar'}">form-${layout}</c:if>
 </c:set>
 
+<c:if test="${empty method}">
+    <c:set var="method" value="post"/>
+</c:if>
+
 <spring:url value="${actionUrl}" var="action" />
-<form:form modelAttribute="${modelAttribute}" id="${id}" action="${action}" cssClass="${layout} ${cssClass}" method="post" role="form">
+<form:form modelAttribute="${modelAttribute}" id="${id}" action="${action}" cssClass="${layout} ${cssClass}" method="${method}" role="form">
     <c:set var="_formId" value="${id}" scope="request" />
     <form:errors id="${id}_errors" path="" cssClass="alert alert-danger" element="div" htmlEscape="false"/>
     <div class="sr-only sr-validation" tabindex="-1" id="${id}_errors_sr" title="<spring:message code="ux.heading.form.accessibleMessages" />"></div>

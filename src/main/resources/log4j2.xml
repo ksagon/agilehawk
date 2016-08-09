@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <Console name="console">
+            <PatternLayout pattern="%d %p [%c] - %t %m%n" />
+        </Console>
+
+        <RollingFile name="hawk" fileName="hawk.log" filePattern="hawk-%d{MM-dd-yyyy}.log">
+            <PatternLayout pattern="%d %p [%c] - %t %m%n" />
+
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="300 MB" />
+            </Policies>
+
+            <DefaultRolloverStrategy max="10" />
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="console" />
+        </Root>
+        
+        <Logger name="net.sagon.agilecoach" level="trace">
+            <AppenderRef ref="console" />
+        </Logger>
+    </Loggers>
+</Configuration>

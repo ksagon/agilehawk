@@ -1,4 +1,4 @@
-<%@ taglib prefix="edo" tagdir="/WEB-INF/tags/edo" %>
+<%@ taglib prefix="hawk" tagdir="/WEB-INF/tags/hawk" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <%@ attribute name="id" required="true" description="Modal element ID" %>
@@ -9,17 +9,17 @@
 
 <spring:message var="buttonName"  code="${buttonName}" text="${buttonName}" />
 
-<edo:modal id="${id}" modalHeader="${modalHeader}" content="${content}">
+<hawk:modal id="${id}" modalHeader="${modalHeader}" content="${content}">
     <jsp:attribute name="buttons">
         <button id="cancel_${id}" class="btn btn-link" data-dismiss="modal">
             <spring:message code="ux.action.cancel" text="Cancel" />
         </button>
         <button id="submit_${id}" class="btn btn-success">${buttonName}</button>
     </jsp:attribute>
-</edo:modal>
+</hawk:modal>
 
-<script>
-    edo.util.getElement("submit_${id}").click(function () {
+<script data-backdrop="false" id="scrrrpt">
+    hawk.util.getElement("submit_${id}").click(function () {
         var submitButtonWidth = $(this).width();
         $(this).addClass("disabled");
         $(this).width(submitButtonWidth);
@@ -29,11 +29,12 @@
     });
 
     $.EventBus("afterFormAjaxSubmitted").subscribe(function() {
-        $.EventBus("modalActionComplete").publish();
+    	console.log("afterFormAjaxSubmitted");
+        $.EventBus("actionComplete").publish();
     });
 
-    $.EventBus("modalActionComplete").subscribe(function() {
-        var button = edo.util.getElement("submit_${id}");
+    $.EventBus("actionComplete").subscribe(function() {
+        var button = hawk.util.getElement("submit_${id}");
         button.removeClass("disabled");
         button.html("${buttonName}");
     });
