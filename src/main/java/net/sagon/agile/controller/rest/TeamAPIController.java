@@ -1,7 +1,10 @@
 package net.sagon.agile.controller.rest;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,61 +22,110 @@ import net.sagon.agile.dto.ResourceResource;
 import net.sagon.agile.dto.TeamResource;
 import net.sagon.agile.model.Resource;
 import net.sagon.agile.model.Team;
+import net.sagon.agile.service.ResourceService;
 import net.sagon.agile.service.TeamService;
 
 @RestController
-public class TeamAPIController {
-    @Autowired
+@RequestMapping("/api/teams")
+public class TeamAPIController implements ModelAPIController<TeamResource, Team> {
+	@Autowired
+	private Mapper mapper;
+
+	@Autowired
+    private ResourceService resourceService;
+
+	@Autowired
     private TeamService teamService;
 
     @Autowired
     private TeamResourceAssembler teamResourceAssembler;
 
-    @RequestMapping(value = "/api/teams", method = RequestMethod.GET, produces = {"application/json"})
+    @Autowired
+    private TeamResourceResourceAssembler teamResourceResourceAssembler;
+
+    @RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
     @ResponseBody
-    public PagedResources<TeamResource> getTeams(@PageableDefault(page=0, size=5) final Pageable pageable, final PagedResourcesAssembler<Team> assembler ) {
+    public PagedResources<TeamResource> get(@PageableDefault(page=0, size=5) final Pageable pageable, final PagedResourcesAssembler<Team> assembler ) {
         Page<Team> teamPage = teamService.findAll(pageable);
 
         return assembler.toResource(teamPage, teamResourceAssembler);
     }
 
-    @RequestMapping(value = "/api/teams/{teamId}", method = RequestMethod.GET, produces = {"application/json"})
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {"application/json"})
     @ResponseBody
-    public TeamResource getTeam( @PathVariable final String teamId ) {
-        Team team = teamService.find(teamId);
+    public TeamResource get( @PathVariable final String id ) {
+        Team team = teamService.find(id);
 
         return teamResourceAssembler.toResource(team);
     }
 
-    @RequestMapping(value = "/api/teams/{teamId}", method = RequestMethod.PUT, produces = {"application/json"})
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = {"application/json"})
     @ResponseBody
-    public TeamResource updateTeam( @PathVariable final String teamId, @Valid @RequestBody Team team ) {
-        Team teamToUpdate = teamService.find(teamId);
+    public TeamResource update( @PathVariable final String id, @Valid @RequestBody Team team ) {
+        Team teamToUpdate = teamService.find(id);
         
-        teamToUpdate.setEnd(team.getEnd());
-        teamToUpdate.setStart(team.getStart());
-        teamToUpdate.setName(team.getName());
+        mapper.map(team, teamToUpdate);
 
         teamService.save(teamToUpdate);
 
         return teamResourceAssembler.toResource(teamToUpdate);
     }
 
-    @RequestMapping(value = "/api/teams", method = RequestMethod.POST, produces = {"application/json"})
+    @RequestMapping(method = RequestMethod.POST, produces = {"application/json"})
     @ResponseBody
-    public TeamResource createTeam( @Valid @RequestBody Team team ) {
+    public TeamResource create( @Valid @RequestBody Team team ) {
         teamService.save(team);
 
         return teamResourceAssembler.toResource(team);
     }
 
-    @RequestMapping(value = "/api/teams/{teamId}", method = RequestMethod.DELETE, produces = {"application/json"})
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseBody
-    public TeamResource deleteTeam( @PathVariable final String teamId ) {
-        Team teamToUpdate = teamService.find(teamId);
+    public TeamResource delete( @PathVariable final String id ) {
+        Team teamToUpdate = teamService.find(id);
         
-        teamService.delete(teamId);
+        teamService.delete(id);
 
         return teamResourceAssembler.toResource(teamToUpdate);
+    }
+
+    @RequestMapping(value = "/{id}/resources", method = RequestMethod.GET, produces = {"application/json"})
+    @ResponseBody
+    public List<ResourceResource> getTeamResources( @PathVariable final String id ) {
+        Team team = teamService.find(id);
+
+        return teamResourceResourceAssembler.toResources(team, team.getResources());
+    }
+
+    @RequestMapping(value = "/{id}/resources", method = RequestMethod.POST, produces = {"application/json"})
+    @ResponseBody
+    public ResourceResource createTeamResource( @PathVariable final String id, @RequestBody Resource resource ) {
+        Team team = teamService.find(id);
+        Resource teamResource = resourceService.find(resource.getId());
+
+        team.addResource(teamResource);
+        teamService.save(team);
+
+        return teamResourceResourceAssembler.toResource(team, teamResource);
+    }
+
+    @RequestMapping(value = "/{teamId}/resources/{resourceId}", method = RequestMethod.GET, produces = {"application/json"})
+    @ResponseBody
+    public ResourceResource getTeamResource( @PathVariable final String teamId, @PathVariable final String resourceId ) {
+        Team team = teamService.find(teamId);
+        Resource teamResource = team.getResource(resourceId);
+
+        return teamResourceResourceAssembler.toResource(team, teamResource);
+    }
+
+    @RequestMapping(value = "/{teamId}/resources/{resourceId}", method = RequestMethod.DELETE, produces = {"application/json"})
+    @ResponseBody
+    public ResourceResource deleteTeamResource( @PathVariable final String teamId, @PathVariable final String resourceId ) {
+        Team team = teamService.find(teamId);
+        Resource teamResource = team.getResource(resourceId);
+        
+        teamService.removeResource(teamId, resourceId);
+
+        return teamResourceResourceAssembler.toResource(team, teamResource);
     }
 }

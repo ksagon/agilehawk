@@ -21,6 +21,7 @@ public class RootAPIController {
         root.add(selfLink());
         root.add(teamsLink());
         root.add(resourcesLink());
+        root.add(storiesLink());
 
         return root;
     }
@@ -36,7 +37,7 @@ public class RootAPIController {
 
     private Link teamsLink() {
         try {
-            return linkTo(TeamAPIController.class, TeamAPIController.class.getMethod("getTeams", Pageable.class, PagedResourcesAssembler.class), new Object[] {}).withRel("teams");
+            return linkTo(TeamAPIController.class, TeamAPIController.class.getMethod("get", Pageable.class, PagedResourcesAssembler.class), new Object[] {}).withRel("teams");
         }
         catch(NoSuchMethodException e) {
             throw new RuntimeException(e);
@@ -45,7 +46,16 @@ public class RootAPIController {
 
     private Link resourcesLink() {
         try {
-            return linkTo(ResourceAPIController.class, ResourceAPIController.class.getMethod("getResources", Pageable.class, PagedResourcesAssembler.class), new Object[] {}).withRel("resources");
+            return linkTo(ResourceAPIController.class, ResourceAPIController.class.getMethod("get", Pageable.class, PagedResourcesAssembler.class), new Object[] {}).withRel("resources");
+        }
+        catch(NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Link storiesLink() {
+        try {
+            return linkTo(StoryAPIController.class, StoryAPIController.class.getMethod("get", Pageable.class, PagedResourcesAssembler.class), new Object[] {}).withRel("stories");
         }
         catch(NoSuchMethodException e) {
             throw new RuntimeException(e);

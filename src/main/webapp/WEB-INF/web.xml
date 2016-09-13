@@ -40,6 +40,15 @@
 		<url-pattern>/agile/*</url-pattern>
 	</servlet-mapping>
 
+	<filter>
+	  <filter-name>CorsFilter</filter-name>
+	  <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	  <filter-name>CorsFilter</filter-name>
+	  <url-pattern>/*</url-pattern>
+	</filter-mapping>
+
 	<welcome-file-list>
 		<welcome-file>/index.jsp</welcome-file>
 	</welcome-file-list>

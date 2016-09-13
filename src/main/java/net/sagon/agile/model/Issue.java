@@ -36,6 +36,10 @@ public abstract class Issue extends Model {
 
     public abstract IssueType getType();
     
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getTitle() {
         return title;
     }
